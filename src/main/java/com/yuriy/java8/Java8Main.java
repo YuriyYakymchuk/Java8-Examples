@@ -1,5 +1,6 @@
 package com.yuriy.java8;
 
+import com.google.common.collect.Lists;
 import com.yuriy.model.IntegerHelper;
 import com.yuriy.model.Person;
 
@@ -16,6 +17,18 @@ import java.util.stream.Stream;
  */
 public class Java8Main {
 
+    private static class A{
+        public static void getMessage(){
+            System.out.println ("A");
+        }
+    }
+
+    private static class B extends A {
+        public static void getMessage() {
+            System.out.println ("B");
+        }
+    }
+
     private static Predicate<Person> workingMen = person -> person.getSex() == Person.SEX.MALE && person.getAge() > 18
             && person.getAge() < 60;
     private static Predicate<Person> workingWomen = person -> person.getSex() == Person.SEX.FEMALE && person.getAge() > 18
@@ -27,8 +40,15 @@ public class Java8Main {
     private static Predicate<Person> workingPeople = workingMen.or(workingWomen);
 
     public static void main(String[] args) {
-        objectExamples();
-        collectorsExample();
+        B b = new B ();
+        A a = b;
+        a.getMessage ();
+        b.getMessage ();
+        int i = 1;
+        int j = i++ + ++i;
+        System.out.println (j);
+        List<List<String>> strings = Arrays.asList(Arrays.asList("A","B","C"),Arrays.asList("D","E","F"));
+        strings.stream().flatMap(strings1 -> strings1.stream()).collect(Collectors.toList()).forEach(System.out::println);
     }
 
     private static void collectorsExample() {
